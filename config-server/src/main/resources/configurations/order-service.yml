@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: password
+    url: jdbc:postgresql://localhost:5432/order
+    username: iraianbu
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        spring.json.type.mapping: orderConfirmation:com.iraianbu.orderservice.kafka.OrderConfirmation;
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+application:
+  config:
+    customer-url: http://localhost:8222/api/v1/customers
+    product-url: http://localhost:8222/api/v1/products
+    payment-url: http://localhost:8222/api/v1/payment
