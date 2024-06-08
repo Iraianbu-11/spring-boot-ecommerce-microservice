@@ -8,11 +8,11 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
   kafka:
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       properties:
-        spring.json.type.mapping: paymentConfirmation:com.iraianbu.paymentservice.body.PaymentNotificationRequest;
+        spring.json.type.mapping: paymentConfirmation:com.iraianbu.ecommerce.body.PaymentNotificationRequest
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
