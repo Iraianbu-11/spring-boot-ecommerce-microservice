@@ -8,6 +8,8 @@ import com.iraianbu.orderservice.customer.CustomerClient;
 import com.iraianbu.orderservice.kafka.OrderConfirmation;
 import com.iraianbu.orderservice.kafka.OrderProducer;
 import com.iraianbu.orderservice.orderline.OrderLineService;
+import com.iraianbu.orderservice.payment.PaymentClient;
+import com.iraianbu.orderservice.payment.PaymentRequest;
 import com.iraianbu.orderservice.product.ProductClient;
 import com.iraianbu.orderservice.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerClient customerClient;
+    private final PaymentClient paymentClient;
     private final ProductClient productClient;
     private final ProductMapper mapper;
     private final OrderLineService orderLineService;
@@ -52,6 +55,14 @@ public class OrderService {
         }
 
         // Start Payment Process -> Kafka
+        var paymentRequest = new PaymentRequest(
+            request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(

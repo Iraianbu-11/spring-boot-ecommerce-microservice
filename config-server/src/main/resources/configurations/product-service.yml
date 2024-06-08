@@ -4,6 +4,11 @@ spring:
     password: password
     url: jdbc:postgresql://localhost:5432/product
     username: iraianbu
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
   flyway:
     baseline-description: '"init"'
     baseline-on-migrate: true
@@ -11,8 +16,3 @@ spring:
     enabled: true
     password: ${spring.datasource.password}
     user: ${spring.datasource.username}
-  jpa:
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: validate
