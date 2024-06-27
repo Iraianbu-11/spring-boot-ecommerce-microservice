@@ -20,6 +20,11 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.createCustomer(customer));
     }
 
+    @GetMapping("/dev")
+    public String dev(){
+        return "Success";
+    }
+
     @PutMapping
     public ResponseEntity<Void> updateCustomer(@RequestBody @Valid CustomerRequest customerRequest) {
         customerService.updateCustomer(customerRequest);
