@@ -43,7 +43,7 @@ const AddCustomer = () => {
         .then((response) => {
             console.log(response.id);
             toast.success("Customer Added Successfully!!!", {
-                onClose: () => navigate("/customer/home")
+                onClose: () => navigate("/customer")
             });
         })
         .catch(err => {

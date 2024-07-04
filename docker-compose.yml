@@ -6,8 +6,7 @@ services:
       - "3000:3000"
     networks:
       - microservices-net
-    restart: unless-stopped
-
+  
   postgresql:
     container_name: postgres
     image: postgres
@@ -23,7 +22,7 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
-
+  
   pgadmin:
     container_name: ms_pgadmin
     image: dpage/pgadmin4
@@ -46,7 +45,14 @@ services:
       - "9411:9411"
     networks:
       - microservices-net
-
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices-net
+    restart: unless-stopped
   mongodb:
     image: mongo
     container_name: mongodb
@@ -99,6 +105,8 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      #PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
     networks:
       - microservices-net
 
@@ -110,7 +118,6 @@ services:
       - 1025:1025
     networks:
       - microservices-net
-
   discovery-service:
     container_name: discovery-service
     build: ./backend/discovery-service
@@ -120,7 +127,6 @@ services:
       - DISCOVERY_NAME=discovery-service
     ports:
       - "8761:8761"
-    restart: unless-stopped
 
   api-gateway:
     container_name: api-gateway
@@ -144,10 +150,12 @@ services:
     depends_on:
       - discovery-service
       - mongodb
+      - redis
     environment:
       - HOST_NAME=localhost
       - DISCOVERY_NAME=discovery-service
       - MONGO_HOST=mongodb
+      - REDIS_HOST=redis
     ports:
       - "8090:8090"
     restart: unless-stopped
@@ -160,10 +168,12 @@ services:
     depends_on:
       - discovery-service
       - postgresql
+      - redis
     environment:
       - HOST_NAME=localhost
       - POSTGRES_HOST=postgres
       - DISCOVERY_NAME=discovery-service
+      - REDIS_HOST=redis
     ports:
       - "8050:8050"
     restart: unless-stopped
@@ -217,13 +227,16 @@ services:
       - HOST_NAME=localhost
       - POSTGRES_HOST=postgres
       - DISCOVERY_NAME=discovery-service
+      - REDIS_HOST=redis
     depends_on:
       - discovery-service
       - postgresql
       - kafka
+      - redis
     ports:
       - "8070:8070"
     restart: unless-stopped
+
 
 networks:
   microservices-net:

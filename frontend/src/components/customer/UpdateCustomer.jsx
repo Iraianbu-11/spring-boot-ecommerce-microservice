@@ -42,8 +42,8 @@ const UpdateCustomer = () => {
     updateCustomer(jsonData)
     .then((response) => {
       console.log(response.id);
-      toast.success("Customer Added Successfully!!!", {
-          onClose: () => navigate("/customer/home")
+      toast.success("Customer Updated Successfully!!!", {
+          onClose: () => navigate("/customer")
       });
   })
   .catch(err => {

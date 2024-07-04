@@ -4,6 +4,8 @@ import com.iraianbu.ecommerce.model.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
+import java.io.Serializable;
+
 public record CustomerRequest(String id,
                               @NotNull(message = "Customer Firstname is required")
                               String firstName,
@@ -12,5 +14,5 @@ public record CustomerRequest(String id,
                               @NotNull(message = "Customer Email is required")
                               @Email(message = "Invalid Email Address")
                               String email,
-                              Address address) {
+                              Address address) implements Serializable {
 }

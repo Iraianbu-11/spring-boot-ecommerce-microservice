@@ -15,6 +15,8 @@ import com.iraianbu.ecommerce.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,14 +82,18 @@ public class OrderService {
     return order.getId();
     }
 
+    @Cacheable(value = "order")
     public List<OrderResponse > findAll() {
+        log.info("findAll Method Called....");
         return orderRepository.findAll()
                 .stream()
                 .map(mapper::fromOrder)
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "order",key = "#orderId")
     public OrderResponse findById(Integer orderId) {
+        log.info("findbyId Method Called....");
         return orderRepository.findById(orderId)
                 .map(mapper::fromOrder)
                 .orElseThrow(() -> new EntityNotFoundException("No order found with this id " + orderId));

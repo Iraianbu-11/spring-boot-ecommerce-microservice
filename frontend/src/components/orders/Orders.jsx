@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { listOrders, placeOrder } from "../../service/ecommerce";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [orderData, setOrderData] = useState({
@@ -44,7 +43,7 @@ const Orders = () => {
     setOrderData((prevData) => ({
       ...prevData,
       [name]: value,
-      reference: "ZCoM-2024" + referenceGenerator
+      reference: "ZCoM-2024" + referenceGenerator()
     }));
   };
 

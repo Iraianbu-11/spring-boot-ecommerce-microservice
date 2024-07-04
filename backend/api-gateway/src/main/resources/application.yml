@@ -14,27 +14,27 @@ spring:
           enabled: true
       routes:
         - id: customer-service
-#          uri: lb://customer-service
+#          uri: lb:http://CUSTOMER-SERVICE
           uri: http://customer-service:8090
           predicates:
             - Path=/api/v1/customers/**
         - id: order-service
-          #uri: lb://order-service
+          #uri: lb:http://ORDER-SERVICE
           uri: http://order-service:8070
           predicates:
             - Path=/api/v1/orders/**
         - id: order-lines-service
-          #uri: lb://order-lines-service
+          #uri: lb:http//ORDER-SERVICE
           uri: http://order-lines-service:8070
           predicates:
             - Path=/api/v1/order-lines/**
         - id: product-service
-          #uri: lb://product-service
+          #uri: lb:http://PRODUCT-SERVICE
           uri: http://product-service:8050
           predicates:
             - Path=/api/v1/products/**
         - id: payment-service
-          #uri: lb://payment-service
+          #uri: lb:http://PAYMENT-SERVICE
           uri: http://payment-service:8060
           predicates:
             - Path=/api/v1/payments/**
